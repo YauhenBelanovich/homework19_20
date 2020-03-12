@@ -3,10 +3,11 @@ package com.gmail.yauhen2012.webmodule.runner;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import com.gmail.yauhen2012.service.impl.MyUserDetailsService;
 import com.gmail.yauhen2012.service.model.AddItemDTO;
 import com.gmail.yauhen2012.service.ItemService;
 import com.gmail.yauhen2012.service.model.ItemDTO;
-import com.gmail.yauhen2012.service.model.ItemEnum;
+import com.gmail.yauhen2012.service.model.ItemStatusEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.ApplicationArguments;
@@ -18,9 +19,12 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private final ItemService itemService;
+    private final MyUserDetailsService myUserDetailsService;
 
-    public MyApplicationRunner(ItemService itemService) {
-        this.itemService = itemService;}
+    public MyApplicationRunner(ItemService itemService, MyUserDetailsService myUserDetailsService) {
+        this.itemService = itemService;
+        this.myUserDetailsService = myUserDetailsService;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -28,17 +32,17 @@ public class MyApplicationRunner implements ApplicationRunner {
 
         AddItemDTO addItemDTO1 = new AddItemDTO();
         addItemDTO1.setName("item1");
-        addItemDTO1.setStatus(ItemEnum.COMPLETED);
+        addItemDTO1.setStatus(ItemStatusEnum.COMPLETED);
         itemService.addItem(addItemDTO1);
 
         AddItemDTO addItemDTO2 = new AddItemDTO();
         addItemDTO2.setName("item2");
-        addItemDTO2.setStatus(ItemEnum.COMPLETED);
+        addItemDTO2.setStatus(ItemStatusEnum.COMPLETED);
         itemService.addItem(addItemDTO2);
 
         AddItemDTO addItemDTO3 = new AddItemDTO();
         addItemDTO3.setName("item3");
-        addItemDTO3.setStatus(ItemEnum.READY);
+        addItemDTO3.setStatus(ItemStatusEnum.READY);
         itemService.addItem(addItemDTO3);
 
 //        itemService.deleteCompletedItems();
@@ -49,7 +53,6 @@ public class MyApplicationRunner implements ApplicationRunner {
 
         List<ItemDTO> completedItems = itemService.findAllCompletedItems();
         completedItems.forEach(System.out::println);
-
 
     }
 

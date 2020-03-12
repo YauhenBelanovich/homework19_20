@@ -11,7 +11,7 @@ public class AddItemDTO {
 
     @NotNull
     @Size(min = 5, max = 9, message = "READY or COMPLETED")
-    private ItemEnum status;
+    private ItemStatusEnum status;
 
     public String getName() {
         return name;
@@ -21,11 +21,11 @@ public class AddItemDTO {
         this.name = name;
     }
 
-    public ItemEnum getStatus() {
+    public ItemStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(ItemEnum status) {
+    public void setStatus(ItemStatusEnum status) {
         this.status = status;
     }
 
