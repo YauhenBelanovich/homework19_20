@@ -59,24 +59,24 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
     }
 
     @Override
-    public int delete(Connection connection) throws SQLException {
+    public void deleteItemsByStatus(Connection connection, String status) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
                 "DELETE FROM item WHERE status=?"
         )
         ) {
-            statement.setString(1, RepositoryConstant.COMPLETED);
-            return statement.executeUpdate();
+            statement.setString(1, status);
+            statement.executeUpdate();
         }
     }
 
     @Override
-    public int update(Integer id, String newStatus, Connection connection) throws SQLException {
+    public void update(Integer id, String newStatus, Connection connection) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
                 "UPDATE item SET status=? WHERE id=?"
         )) {
             statement.setString(1, newStatus);
             statement.setInt(2, id);
-            return statement.executeUpdate();
+            statement.executeUpdate();
         }
     }
 
@@ -98,11 +98,11 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
     }
 
     @Override
-    public List<Item> findAllItemsWithCompletedStatus(Connection connection) throws SQLException{
+    public List<Item> findAllItemsWithCompletedStatus(Connection connection) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
                 "SELECT id, name, status FROM item WHERE status=?"
         )) {
-            statement.setString(1, RepositoryConstant.COMPLETED);
+            statement.setString(1, RepositoryConstant.COMPLETED_STATUS);
             List<Item> itemList = new ArrayList<>();
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {

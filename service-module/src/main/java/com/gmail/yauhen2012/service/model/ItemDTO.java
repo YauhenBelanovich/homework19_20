@@ -1,8 +1,9 @@
 package com.gmail.yauhen2012.service.model;
 
 public class ItemDTO {
+
     private Integer id;
-    private String  name;
+    private String name;
     private String status;
 
     public Integer getId() {

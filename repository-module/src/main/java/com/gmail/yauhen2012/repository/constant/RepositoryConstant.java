@@ -2,6 +2,7 @@ package com.gmail.yauhen2012.repository.constant;
 
 public interface RepositoryConstant {
 
-    String READY = "READY";
-    String COMPLETED = "COMPLETED";
+    String READY_STATUS = "READY";
+    String COMPLETED_STATUS = "COMPLETED";
 }
+

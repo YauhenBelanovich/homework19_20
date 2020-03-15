@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.gmail.yauhen2012.repository.ItemRepository;
 import com.gmail.yauhen2012.repository.model.Item;
 import com.gmail.yauhen2012.service.ItemService;
+import com.gmail.yauhen2012.service.constant.ServiceConstant;
 import com.gmail.yauhen2012.service.model.AddItemDTO;
 import com.gmail.yauhen2012.service.model.ItemDTO;
 import org.apache.logging.log4j.LogManager;
@@ -23,16 +24,18 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     public ItemServiceImpl(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;}
+        this.itemRepository = itemRepository;
+    }
 
     @Override
-    public void addItem(AddItemDTO addItemDTO) {
+    public int addItem(AddItemDTO addItemDTO) {
         try (Connection connection = itemRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 Item item = convertItemDTOToDatabaseItem(addItemDTO);
-                itemRepository.add(item, connection);
+                Item addedItem = itemRepository.add(item, connection);
                 connection.commit();
+                return addedItem.getId();
             } catch (SQLException e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);
@@ -40,15 +43,15 @@ public class ItemServiceImpl implements ItemService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-
+        return 0;
     }
 
     @Override
-    public void deleteCompletedItems() {
-        try (Connection connection = itemRepository.getConnection()){
+    public void deleteItemsByStatus(String status) {
+        try (Connection connection = itemRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                itemRepository.delete(connection);
+                itemRepository.deleteItemsByStatus(connection, status);
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
@@ -62,15 +65,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void updateStatusById(Integer id) {
-        try(Connection connection = itemRepository.getConnection()){
+        try (Connection connection = itemRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 Item item = itemRepository.findItemById(id, connection);
                 String newStatus;
-                if ((item.getStatus().equals("READY"))) {
-                    newStatus = "COMPLETED";
+                if ((item.getStatus().equals(ServiceConstant.READY_STATUS))) {
+                    newStatus = ServiceConstant.COMPLETED_STATUS;
                 } else {
-                    newStatus = "READY";
+                    newStatus = ServiceConstant.READY_STATUS;
                 }
                 itemRepository.update(id, newStatus, connection);
                 connection.commit();
@@ -85,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> findAll() {
-        try (Connection connection = itemRepository.getConnection()){
+        try (Connection connection = itemRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<Item> itemList = itemRepository.findAll(connection);
@@ -106,7 +109,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> findAllCompletedItems() {
-        try (Connection connection = itemRepository.getConnection()){
+        try (Connection connection = itemRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<Item> itemList = itemRepository.findAllItemsWithCompletedStatus(connection);
@@ -123,6 +126,25 @@ public class ItemServiceImpl implements ItemService {
             logger.error(e.getMessage(), e);
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public ItemDTO findItemById(Integer id) {
+        try (Connection connection = itemRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                Item item = itemRepository.findItemById(id, connection);
+                ItemDTO itemDTO = convertDatabaseObjectToDTO(item);
+                connection.commit();
+                return itemDTO;
+            } catch (SQLException e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
     }
 
     private ItemDTO convertDatabaseObjectToDTO(Item item) {

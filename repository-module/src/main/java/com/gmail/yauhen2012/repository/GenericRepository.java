@@ -12,8 +12,6 @@ public interface GenericRepository<T> {
 
     List<T> findAll(Connection connection) throws SQLException;
 
-    int delete(Connection connection) throws SQLException;
-
-    int update(Integer id, String newStatus, Connection connection) throws SQLException;
+    void update(Integer id, String newStatus, Connection connection) throws SQLException;
 
 }

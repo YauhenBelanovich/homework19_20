@@ -39,12 +39,7 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<User> implements U
     }
 
     @Override
-    public int delete(Connection connection) throws SQLException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int update(Integer id, String newStatus, Connection connection) throws SQLException {
+    public void update(Integer id, String newStatus, Connection connection) throws SQLException {
         throw new UnsupportedOperationException();
     }
 

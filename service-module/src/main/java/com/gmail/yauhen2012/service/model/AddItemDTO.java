@@ -9,8 +9,7 @@ public class AddItemDTO {
     @Size(min = 3, max = 40, message = "three characters or more")
     private String name;
 
-    @NotNull
-    @Size(min = 5, max = 9, message = "READY or COMPLETED")
+    @NotNull(message = "is required")
     private ItemStatusEnum status;
 
     public String getName() {
@@ -27,6 +26,14 @@ public class AddItemDTO {
 
     public void setStatus(ItemStatusEnum status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "AddItemDTO{" +
+                "name='" + name + '\'' +
+                ", status=" + status +
+                '}';
     }
 
 }
