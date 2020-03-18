@@ -5,7 +5,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private String role;
+    private RoleEnum role;
 
     public Integer getId() {
         return id;
@@ -31,11 +31,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public RoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleEnum role) {
         this.role = role;
     }
 

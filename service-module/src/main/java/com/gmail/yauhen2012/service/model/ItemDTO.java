@@ -1,10 +1,12 @@
 package com.gmail.yauhen2012.service.model;
 
+import com.gmail.yauhen2012.repository.model.ItemStatusEnum;
+
 public class ItemDTO {
 
     private Integer id;
     private String name;
-    private String status;
+    private ItemStatusEnum status;
 
     public Integer getId() {
         return id;
@@ -22,11 +24,11 @@ public class ItemDTO {
         this.name = name;
     }
 
-    public String getStatus() {
+    public ItemStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ItemStatusEnum status) {
         this.status = status;
     }
 

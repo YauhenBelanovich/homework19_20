@@ -1,5 +1,6 @@
 package com.gmail.yauhen2012.webmodule.config;
 
+import com.gmail.yauhen2012.repository.model.RoleEnum;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,7 +32,7 @@ public class ApiSecuriryConfig extends WebSecurityConfigurerAdapter {
 
         http.antMatcher("/api/**")
                 .authorizeRequests()
-                .anyRequest().hasRole("ADMIN")
+                .anyRequest().hasRole(RoleEnum.ADMIN.name())
                 .and()
                 .httpBasic()
                 .and()

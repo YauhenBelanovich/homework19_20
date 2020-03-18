@@ -1,5 +1,6 @@
 package com.gmail.yauhen2012.webmodule.config;
 
+import com.gmail.yauhen2012.repository.model.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/items").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/items").hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name())
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/items")

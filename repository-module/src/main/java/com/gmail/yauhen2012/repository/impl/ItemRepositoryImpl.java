@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.yauhen2012.repository.ItemRepository;
-import com.gmail.yauhen2012.repository.constant.RepositoryConstant;
 import com.gmail.yauhen2012.repository.model.Item;
+import com.gmail.yauhen2012.repository.model.ItemStatusEnum;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,7 +24,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
                 Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, item.getName());
-            statement.setString(2, item.getStatus());
+            statement.setString(2, item.getStatus().name());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating item failed, no rows affected.");
@@ -102,7 +102,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
         try (PreparedStatement statement = connection.prepareStatement(
                 "SELECT id, name, status FROM item WHERE status=?"
         )) {
-            statement.setString(1, RepositoryConstant.COMPLETED_STATUS);
+            statement.setString(1, ItemStatusEnum.COMPLETED.name());
             List<Item> itemList = new ArrayList<>();
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -122,7 +122,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
         String name = rs.getString("name");
         item.setName(name);
         String status = rs.getString("status");
-        item.setStatus(status);
+        item.setStatus(ItemStatusEnum.valueOf(status));
         return item;
     }
 

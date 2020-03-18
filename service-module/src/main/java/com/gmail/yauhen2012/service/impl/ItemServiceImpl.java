@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import com.gmail.yauhen2012.repository.ItemRepository;
 import com.gmail.yauhen2012.repository.model.Item;
 import com.gmail.yauhen2012.service.ItemService;
-import com.gmail.yauhen2012.service.constant.ServiceConstant;
 import com.gmail.yauhen2012.service.model.AddItemDTO;
 import com.gmail.yauhen2012.service.model.ItemDTO;
+import com.gmail.yauhen2012.repository.model.ItemStatusEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -69,13 +69,15 @@ public class ItemServiceImpl implements ItemService {
             connection.setAutoCommit(false);
             try {
                 Item item = itemRepository.findItemById(id, connection);
-                String newStatus;
-                if ((item.getStatus().equals(ServiceConstant.READY_STATUS))) {
-                    newStatus = ServiceConstant.COMPLETED_STATUS;
-                } else {
-                    newStatus = ServiceConstant.READY_STATUS;
+                if (item != null) {
+                    String newStatus;
+                    if ((item.getStatus().equals(ItemStatusEnum.READY))) {
+                        newStatus = ItemStatusEnum.COMPLETED.name();
+                    } else {
+                        newStatus = ItemStatusEnum.READY.name();
+                    }
+                    itemRepository.update(id, newStatus, connection);
                 }
-                itemRepository.update(id, newStatus, connection);
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
@@ -158,7 +160,7 @@ public class ItemServiceImpl implements ItemService {
     private Item convertItemDTOToDatabaseItem(AddItemDTO addItemDTO) {
         Item item = new Item();
         item.setName(addItemDTO.getName());
-        item.setStatus(addItemDTO.getStatus().toString());
+        item.setStatus(addItemDTO.getStatus());
         return item;
     }
 

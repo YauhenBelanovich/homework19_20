@@ -1,5 +1,7 @@
 package com.gmail.yauhen2012.service.model;
 
+import com.gmail.yauhen2012.repository.model.RoleEnum;
+
 public class UserDTO {
 
     private String username;

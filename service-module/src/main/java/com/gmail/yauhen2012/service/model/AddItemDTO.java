@@ -3,6 +3,8 @@ package com.gmail.yauhen2012.service.model;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.gmail.yauhen2012.repository.model.ItemStatusEnum;
+
 public class AddItemDTO {
 
     @NotNull(message = "is required")
