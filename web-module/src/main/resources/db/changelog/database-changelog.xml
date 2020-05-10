@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="yauhen2012@gmail.com">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(16)"/>
+            <column name="password" type="varchar(70)"/>
+            <column name="role" type="varchar(16)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="yauhen2012@gmail.com">
+        <createTable tableName="item">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(40)"/>
+            <column name="status" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="yauhen2012@gmail.com">
+        <insert tableName="user">
+            <column name="username" value="user"/>
+            <column name="password" value="$2y$12$IySiuFP8GSVwGkLbwUE7zusUiOIb4viF7GXDpnJahoF4QIQMaELF6"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="yauhen2012@gmail.com">
+        <insert tableName="user">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2y$12$Y6kbQ8Sd1Jbgg6/MaIg5OuBk5BZ4YwhIIyJzX35q.h50PZb6RHima"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
